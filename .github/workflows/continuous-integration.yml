@@ -1,0 +1,34 @@
+name: continuous integration 
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - 'web/**'
+  push:
+    branches:
+      - "main"
+    paths:
+      - 'web/**'
+  workflow_dispatch:
+
+jobs:
+  unit-test:
+    name: run unit tests
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: './web' # set the default repository for the steps
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: check repository
+        uses: actions/checkout@v2
+
+      - name: install node.js dependencies
+        run: npm install 
+
+      - name: run tests
+        run: npm run test
