@@ -13,9 +13,10 @@ on:
       - 'web/**'
   workflow_dispatch:
 
+
 jobs:
   unit-test:
-    name: run unit tests
+    name: run unit tests # run init test 
 
     defaults:
       run:
@@ -30,5 +31,29 @@ jobs:
       - name: install node.js dependencies
         run: npm install 
 
+      - name: address all issues
+        run: npm audit fix --force
+
       - name: run tests
         run: npm run test
+  
+  linter:
+    name: run linter
+
+    defaults:
+      run: 
+        shell: bash
+        working-directory: './web'
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: 'repository check in'
+
+      - name: install dependencies
+        run: npm install
+      
+      - name: run linter
+        run: npx standard -v
+
